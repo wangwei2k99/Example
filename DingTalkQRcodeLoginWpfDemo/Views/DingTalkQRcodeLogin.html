@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>嵌入式钉钉扫码登录</title>
+    <style type="text/css">
+        .QRcode {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -200px 0 0 -150px;
+            width: 300px;
+            height: 400px;
+            border: 3px solid #0094ff;
+/*            background: #0094ff;*/
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="QRcode">
+        <h3 style="text-align:center">嵌入式钉钉扫码登录</h3>
+        <div id="login_container"></div>
+        <!--<button type="button" class="btn btn-primary" id="JumpToLogin">调用钉钉的网页扫码</button>-->
+    </div>
+    <script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"></script>
+    <script type="text/javascript">
+        var ding = { "appid": "", "agentid": "", "corpid": "", "uri": "", "redirect_uri": "", "code": "", "accesstoken": "" }
+        //1.5.1.设置扫描授权id
+        ding.appid = "dingoawkbxyyscyjuu5lqn";
+        //1.5.2.设置重定向地址
+        ding.redirect_uri = "http://jzdh.boloni.net:999/";
+        //1.5.3.扫码触发跳转钉钉接口地址
+        ding.uri = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=" + ding.appid + "&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=" + ding.redirect_uri;
+        var obj = DDLogin({
+            id: "login_container",//这里需要你在自己的页面定义一个HTML标签并设置id，例如<div id="login_container"></div>或<span id="login_container"></span>
+            goto: encodeURIComponent(ding.uri),
+            style: "border:none;background-color:#FFFFFF;",
+            width: "240",
+            height: "300"
+        });
+
+        var getcode = function (event) {
+            var origin = event.origin;
+            console.log("origin", event.origin);
+            if (origin == "https://login.dingtalk.com") { //判断是否来自ddLogin扫码事件。
+                var loginTmpCode = event.data;
+                ding.code = loginTmpCode;
+                console.log("获取到code", loginTmpCode);
+                window.parent.postMessage(loginTmpCode, '*');
+                //1.跳转到主页面，微应用自身截取code比对用户信息
+                var redirect_uri_check = "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=dingoazjmclpvolnxq3wba&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=http://&loginTmpCode=";
+                window.location.href = redirect_uri_check + loginTmpCode;
+            }
+        };
+        //2.4.钉钉扫码监听
+        if (typeof window.addEventListener != 'undefined') {
+            window.addEventListener('message', getcode, false);
+        } else if (typeof window.attachEvent != 'undefined') {
+            window.attachEvent('onmessage', getcode);
+        }
+        //2.5.这儿主要是获取code，返回钉钉id，进行后端的钉钉id比对,api接口见下
+        var url = window.location.search.split("&");
+        var code = url[0].substring(url[0].lastIndexOf("=") + 1);
+        console.log(code);
+        if (code != "") {
+            var uri = "/"
+            $http({
+                url: uri,
+                method: "GET",
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).success(function (data) {
+                console.log(data)
+                if (data != "") {
+                    $window.localStorage["user"] = angular.toJson(data[0]);
+                    window.location.href = "/";
+                } else {
+                    alert(data[0].msg);
+                    $scope.user.info = "";
+                    window.location.href = "/";
+                }
+            });
+        }
+                    //调用钉钉的网页扫码
+                    //$("#JumpToLogin").click(function () {
+                    //    window.location.href =
+                    //        "https://oapi.dingtalk.com/connect/qrconnect?appid=dingoawkbxyyscyjuu5lqn&response_type=code&scope=snsapi_login&state=LoginDing&redirect_uri=http://jzdh.boloni.net:999/";
+                    //});
+    </script>
+</body>
+</html>
+

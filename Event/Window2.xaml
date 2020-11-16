@@ -1,0 +1,12 @@
+﻿<Window x:Class="Event.Window2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Event"
+        mc:Ignorable="d"
+        Title="Window2" Height="200" Width="200">
+    <Grid>
+        <Button x:Name="Btn1" Content="点击这里" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20" Click="Btn1_Click"/>
+    </Grid>
+</Window>

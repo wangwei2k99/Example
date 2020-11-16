@@ -1,0 +1,17 @@
+﻿<Window x:Class="ImprotExcel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImprotExcel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Height="30" VerticalAlignment="Top">
+            <Button Width="120" x:Name="Btn1" Content="选择Excel文件..." Click="Btn1_Click" HorizontalAlignment="Left" FontSize="14" Background="#FF91FFA0"></Button>
+            <TextBox x:Name="TextBox1" Text="选择Excel文件..." Width="672" Background="#FF8CC78F" FontSize="16" VerticalContentAlignment="Center"/>
+        </StackPanel>
+        <DataGrid x:Name="DataGrid1" Margin="0,30,0,0"/>
+
+    </Grid>
+</Window>
