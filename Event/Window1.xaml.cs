@@ -24,11 +24,11 @@ namespace Event
         public Window1()
 
         {
-            Event1.Eve1 += Event1_Eve1;
+            Event1.Eve1 += Event1_Eve1Async;
             InitializeComponent();
         }
 
-        private async void Event1_Eve1(object sender, SolidColorBrush brush)
+        private async void Event1_Eve1Async(object sender, SolidColorBrush brush)
         {
             this.Btn1.Background = brush;
             await InvokTextAsync();
