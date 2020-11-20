@@ -1,0 +1,16 @@
+﻿<Window x:Class="Async.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Async"
+        mc:Ignorable="d"
+        Title="异步多线程演示程序" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="GRD1" HorizontalAlignment="Left" Height="419" VerticalAlignment="Top" Width="485"/>
+        <Button x:Name="BTN1"  Content="任务1(密集型计算)3秒" HorizontalAlignment="Left" Margin="560,23,0,0" VerticalAlignment="Top" Width="203" Height="35" FontSize="14" Click="BTN1_Click"/>
+        <Button x:Name="BTN2" Content="任务2(密集型计算)3秒" HorizontalAlignment="Left" Margin="560,80,0,0" VerticalAlignment="Top" Width="203" Height="35" FontSize="14" Click="BTN2_Click"/>
+        <Button x:Name="BTN3" Content="任务3(一般任务)0秒" HorizontalAlignment="Left" Margin="560,137,0,0" VerticalAlignment="Top" Width="203" Height="35" FontSize="14" Click="BTN3_Click"/>
+
+    </Grid>
+</Window>

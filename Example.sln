@@ -9,9 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DingTalkQRcodeLoginWpf", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImprotExcel", "ImprotExcel\ImprotExcel.csproj", "{839E5B36-E980-4370-86A6-055C88DB57D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delegate", "Delegate\Delegate.csproj", "{526166D5-E1F1-4B77-A611-6615A2CF0C74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delegate", "Delegate\Delegate.csproj", "{526166D5-E1F1-4B77-A611-6615A2CF0C74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Event", "Event\Event.csproj", "{53A1DF61-81DE-4F9D-8165-53B02AED62A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Event", "Event\Event.csproj", "{53A1DF61-81DE-4F9D-8165-53B02AED62A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReverseAlgorithm", "ReverseAlgorithm\ReverseAlgorithm.csproj", "{099FE8F5-D47A-4F27-991B-B177B0645C4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Async", "Async\Async.csproj", "{7F65A57A-DBDD-4B0F-BE83-38C8C57B603D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{53A1DF61-81DE-4F9D-8165-53B02AED62A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53A1DF61-81DE-4F9D-8165-53B02AED62A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53A1DF61-81DE-4F9D-8165-53B02AED62A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{099FE8F5-D47A-4F27-991B-B177B0645C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{099FE8F5-D47A-4F27-991B-B177B0645C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{099FE8F5-D47A-4F27-991B-B177B0645C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{099FE8F5-D47A-4F27-991B-B177B0645C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F65A57A-DBDD-4B0F-BE83-38C8C57B603D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F65A57A-DBDD-4B0F-BE83-38C8C57B603D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F65A57A-DBDD-4B0F-BE83-38C8C57B603D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F65A57A-DBDD-4B0F-BE83-38C8C57B603D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
