@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DBEF.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="12.1" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="JK_PM_MES_CTD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CTD_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="SJD_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="CO_TYPE" Type="varchar2" MaxLength="50" />
+          <Property Name="ITEM_SETUP_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="ITEM_TYPE" Type="varchar2" MaxLength="50" />
+          <Property Name="ROOM_TYPE" Type="varchar2" MaxLength="50" />
+          <Property Name="SET_QTY" Type="number" Precision="38" Scale="0" />
+          <Property Name="BIAO_DUAN" Type="varchar2" MaxLength="100" />
+          <Property Name="LOU_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="LOU_UNIT" Type="varchar2" MaxLength="50" />
+          <Property Name="LOU_CENG" Type="varchar2" MaxLength="50" />
+          <Property Name="ROOM_NO" Type="varchar2" MaxLength="50" />
+          <Property Name="BILL_STATUS" Type="varchar2" MaxLength="50" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NEED_DATE" Type="varchar2" MaxLength="50" />
+          <Property Name="ITEM_SETUP_NAME" Type="varchar2" MaxLength="200" />
+          <Property Name="FIX_DATE" Type="varchar2" MaxLength="50" />
+          <Property Name="PROJ_TYPE" Type="varchar2" MaxLength="50" />
+          <Property Name="SPLIT_ORDER_TYPE" Type="varchar2" MaxLength="200" />
+        </EntityType>
+        <EntityContainer Name="DBEFStoreContainer">
+          <EntitySet Name="JK_PM_MES_CTD" EntityType="Self.JK_PM_MES_CTD" Schema="BOLONI" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBEF" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="JK_PM_MES_CTD">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="CTD_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SJD_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CO_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ITEM_SETUP_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ITEM_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ROOM_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SET_QTY" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="BIAO_DUAN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LOU_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOU_UNIT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LOU_CENG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ROOM_NO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_STATUS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NEED_DATE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ITEM_SETUP_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="FIX_DATE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PROJ_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SPLIT_ORDER_TYPE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="JK_PM_MES_CTD" EntityType="Self.JK_PM_MES_CTD" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBEFStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="JK_PM_MES_CTD">
+            <EntityTypeMapping TypeName="DBEF.JK_PM_MES_CTD">
+              <MappingFragment StoreEntitySet="JK_PM_MES_CTD">
+                <ScalarProperty Name="CTD_NO" ColumnName="CTD_NO" />
+                <ScalarProperty Name="SJD_NO" ColumnName="SJD_NO" />
+                <ScalarProperty Name="CO_TYPE" ColumnName="CO_TYPE" />
+                <ScalarProperty Name="ITEM_SETUP_NO" ColumnName="ITEM_SETUP_NO" />
+                <ScalarProperty Name="ITEM_TYPE" ColumnName="ITEM_TYPE" />
+                <ScalarProperty Name="ROOM_TYPE" ColumnName="ROOM_TYPE" />
+                <ScalarProperty Name="SET_QTY" ColumnName="SET_QTY" />
+                <ScalarProperty Name="BIAO_DUAN" ColumnName="BIAO_DUAN" />
+                <ScalarProperty Name="LOU_NO" ColumnName="LOU_NO" />
+                <ScalarProperty Name="LOU_UNIT" ColumnName="LOU_UNIT" />
+                <ScalarProperty Name="LOU_CENG" ColumnName="LOU_CENG" />
+                <ScalarProperty Name="ROOM_NO" ColumnName="ROOM_NO" />
+                <ScalarProperty Name="BILL_STATUS" ColumnName="BILL_STATUS" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NEED_DATE" ColumnName="NEED_DATE" />
+                <ScalarProperty Name="ITEM_SETUP_NAME" ColumnName="ITEM_SETUP_NAME" />
+                <ScalarProperty Name="FIX_DATE" ColumnName="FIX_DATE" />
+                <ScalarProperty Name="PROJ_TYPE" ColumnName="PROJ_TYPE" />
+                <ScalarProperty Name="SPLIT_ORDER_TYPE" ColumnName="SPLIT_ORDER_TYPE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

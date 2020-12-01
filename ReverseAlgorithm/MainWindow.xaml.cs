@@ -87,14 +87,16 @@ namespace ReverseAlgorithm
                      int ntime = 0;
                      int nmin = 0, nmax = 0;
                      var target = StaticVar.TargetValue;
-                     DataRow[] dataRows = dt1.Select("金额 >'" + target + "'");
-                     foreach (DataRow dataRow in dataRows)
-                     {
-                         dataRow.BeginEdit();
-                         dataRow.Delete();
-                         dataRow.EndEdit();
-                     }
-                     dt1.AcceptChanges();
+                     var datatemp = dt1.AsEnumerable().Where(P => Convert.ToDouble(P["金额"]) > target).ToList();
+                     datatemp.ForEach(P => dt1.Rows.Remove(P));
+                     //DataRow[] dataRows = dt1.Select("金额 >'" + target + "'");
+                     //foreach (DataRow dataRow in dataRows)
+                     //{
+                     //    dataRow.BeginEdit();
+                     //    dataRow.Delete();
+                     //    dataRow.EndEdit();
+                     //}
+                     //dt1.AcceptChanges();
                      int count = dt1.Rows.Count;
                      List<DataSource> lds = new List<DataSource>();
                      foreach (DataRow row in dt1.Rows)
