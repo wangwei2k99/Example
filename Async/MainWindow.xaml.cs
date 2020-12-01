@@ -53,9 +53,7 @@ namespace Async
 
                 }));
             });
-
         }
-
         private void BTN2_Click(object sender, RoutedEventArgs e)
         {
             Task.Run(() =>
@@ -77,7 +75,6 @@ namespace Async
                 }));
             });
         }
-
         private void BTN3_Click(object sender, RoutedEventArgs e)
         {
             this.BTN3.IsEnabled = false;
