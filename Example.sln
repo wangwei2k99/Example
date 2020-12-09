@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqOracle", "LinqOracle\Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "U9odd", "U9odd\U9odd.csproj", "{BC19CC43-C032-4CDF-AEBC-F6C98AD1B397}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueModel", "QueueModel\QueueModel.csproj", "{30EDBECD-D072-453D-9C93-E7ABC0BBAD33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{BC19CC43-C032-4CDF-AEBC-F6C98AD1B397}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC19CC43-C032-4CDF-AEBC-F6C98AD1B397}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC19CC43-C032-4CDF-AEBC-F6C98AD1B397}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30EDBECD-D072-453D-9C93-E7ABC0BBAD33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30EDBECD-D072-453D-9C93-E7ABC0BBAD33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30EDBECD-D072-453D-9C93-E7ABC0BBAD33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30EDBECD-D072-453D-9C93-E7ABC0BBAD33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
