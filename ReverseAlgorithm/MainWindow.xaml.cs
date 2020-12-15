@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
+using System.Reflection;
+using System.Threading;
 
 namespace ReverseAlgorithm
 {
@@ -44,9 +46,81 @@ namespace ReverseAlgorithm
             row[0] = "点击此处按Ctrl+V粘贴数据";
             dt.Rows.Add(row);
             StaticVar.GridView = dt;
-            grd.ItemsSource = StaticVar.GridView.AsDataView();
-            grd.ColumnWidth = 200;
+            Gird.ItemsSource = StaticVar.GridView.AsDataView();
+            Gird.ColumnWidth = 200;
         }
+
+        private List<DataSource> Algorithm(List<DataSource> lds, double target)
+        {
+            int count = lds.Count;
+            var factor = 3;
+            int num = 0;
+            int ntime = 0;
+            int nmin = 0, nmax = 0;
+            for (int i = count - 1; i >= 0; i--)
+            {
+                if (lds[i].Money < target) { nmin = nmin + 1; target = target - lds[i].Money; } else { nmin = nmin + 1; break; }
+            }
+            target = StaticVar.TargetValue;
+            for (int i = 0; i < count; i++)
+            {
+                if (lds[i].Money < target) { target = target - lds[i].Money; } else { nmax = i; break; }
+            }
+            int cnt = 0;
+            do
+            {
+                ntime++;
+                num = ntime;
+                if (num == 0)
+                { num = count; }
+                else if (ntime > 10)
+                { num = count; }
+                else if (num < nmin || num > nmax)
+                { num = count; }
+                target = StaticVar.TargetValue;
+                Random rnd = new Random(DateTime.Now.Millisecond);
+                for (int i = 1; i <= num; i++)
+                {
+                    var rn = (double)rnd.Next(100) / 100;
+                    var r = (int)Math.Floor(rn * (count - i + 1)) + i;
+                    if (num == count)
+                    {
+                        if (target < lds[r - 1].Money)
+                        {
+                            num = i - 1;
+                            break;
+                        }
+                    }
+                    var temp = new DataSource();
+                    temp = lds[r - 1];
+                    lds[r - 1] = lds[i - 1];
+                    lds[i - 1] = temp;
+                    target = target - temp.Money;
+                }
+                cnt = 0;
+                while (((int)Math.Floor(target * Math.Pow(10, factor))) != 0)
+                {
+                    cnt++; if (cnt > 300) break;
+                    var rn = (double)rnd.Next(100) / 100;
+                    var i = (int)Math.Floor(rn * (count - num)) + num + 1;
+                    //var i = (int)Math.Floor(rn * (count - num)) + num;
+                    rn = (double)rnd.Next(100) / 100;
+                    var r = (int)Math.Floor(rn / 100 * num) + 1;
+                    var s1 = target + lds[i - 1].Money - lds[r - 1].Money;
+                    if (Math.Abs(s1) < Math.Abs(target))
+                    {
+                        var temp = new DataSource();
+                        temp = lds[r - 1];
+                        lds[r - 1] = lds[i - 1];
+                        lds[i - 1] = temp;
+                        target = target + temp.Money - lds[r - 1].Money;
+                    }
+                }
+            } while ((int)Math.Floor(target * Math.Pow(10, factor)) != 0);
+            var listView = lds.Take(num).ToList();
+            return listView;
+        }
+
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             if (Regex.IsMatch(this.TextBox.Text.Trim(), @"^(([^0][0-9]+|0)\.([0-9]{1,2})$)|^(([^0][0-9]+|0)$)|^(([1-9]+)\.([0-9]{1,2})$)|^(([1-9]+)$)"))
@@ -68,142 +142,54 @@ namespace ReverseAlgorithm
             }
             else
             {
-                await Task.Run(() =>
-                 {
-                     this.Btn1.Dispatcher.Invoke(new Action(delegate
-                     {
-                         this.result.Visibility = Visibility.Collapsed;
-                         this.Btn1.Content = "计算中...";
-                         this.Btn1.IsEnabled = false;
-                     }));
-                 });
-                await Task.Run(() =>
-                 {
-                     DateTime startTime = DateTime.Now;
-                     var factor = 3;
-                     var dt1 = StaticVar.GridView;
-                     int pasteNum = dt1.Rows.Count;
-                     int num = 0;
-                     int ntime = 0;
-                     int nmin = 0, nmax = 0;
-                     var target = StaticVar.TargetValue;
-                     var datatemp = dt1.AsEnumerable().Where(P => Convert.ToDouble(P["金额"]) > target).ToList();
-                     datatemp.ForEach(P => dt1.Rows.Remove(P));
-                     //DataRow[] dataRows = dt1.Select("金额 >'" + target + "'");
-                     //foreach (DataRow dataRow in dataRows)
-                     //{
-                     //    dataRow.BeginEdit();
-                     //    dataRow.Delete();
-                     //    dataRow.EndEdit();
-                     //}
-                     //dt1.AcceptChanges();
-                     int count = dt1.Rows.Count;
-                     List<DataSource> lds = new List<DataSource>();
-                     foreach (DataRow row in dt1.Rows)
-                     {
-                         DataSource ds = new DataSource();
-                         ds.Po = row["单号"].ToString();
-                         ds.Money = Convert.ToDouble(row["金额"]);
-                         ds.Sn = Convert.ToInt32(row["排序"]);
-                         lds.Add(ds);
-                     }
-                     for (int i = count - 1; i >= 0; i--)
-                     {
-                         if (lds[i].Money < target) { nmin = nmin + 1; target = target - lds[i].Money; } else { nmin = nmin + 1; break; }
-                     }
-                     target = StaticVar.TargetValue;
-                     for (int i = 0; i < count; i++)
-                     {
-                         if (lds[i].Money < target) { target = target - lds[i].Money; } else { nmax = i; break; }
-                     }
-                     int cnt = 0;
-                     do
-                     {
-                         ntime++;
-                         num = ntime;
-                         if (num == 0)
-                         { num = count; }
-                         else if (ntime > 10)
-                         { num = count; }
-                         else if (num < nmin || num > nmax)
-                         { num = count; }
-                         target = StaticVar.TargetValue;
-                         Random rnd = new Random(DateTime.Now.Millisecond);
-                         for (int i = 1; i <= num; i++)
-                         {
-                             var rn = (double)rnd.Next(100) / 100;
-                             var r = (int)Math.Floor(rn * (count - i + 1)) + i;
-                             if (num == count)
-                             {
-                                 if (target < lds[r - 1].Money)
-                                 {
-                                     num = i - 1;
-                                     break;
-                                 }
-                             }
-                             var temp = new DataSource();
-                             temp = lds[r - 1];
-                             lds[r - 1] = lds[i - 1];
-                             lds[i - 1] = temp;
-                             target = target - temp.Money;
-                         }
-                         cnt = 0;
-                         while (((int)Math.Floor(target * Math.Pow(10, factor))) != 0)
-                         {
-                             cnt++; if (cnt > 300) break;
-                             var rn = (double)rnd.Next(100) / 100;
-                             var i = (int)Math.Floor(rn * (count - num)) + num + 1;
-                             rn = (double)rnd.Next(100) / 100;
-                             var r = (int)Math.Floor(rn / 100 * num) + 1;
-                             var s1 = target + lds[i - 1].Money - lds[r - 1].Money;
-                             if (Math.Abs(s1) < Math.Abs(target))
-                             {
-                                 var temp = new DataSource();
-                                 temp = lds[r - 1];
-                                 lds[r - 1] = lds[i - 1];
-                                 lds[i - 1] = temp;
-                                 target = target + temp.Money - lds[r - 1].Money;
-                             }
-                         }
-                     } while ((int)Math.Floor(target * Math.Pow(10, factor)) != 0);
-                     DataTable dt2 = new DataTable();
-                     dt2 = dt1.Clone();
-                     for (int i = 0; i < num; i++)
-                     {
-                         DataRow row = dt2.NewRow();
-                         row["单号"] = lds[i].Po;
-                         row["金额"] = lds[i].Money;
-                         row["排序"] = lds[i].Sn;
-                         dt2.Rows.Add(row);
-                     }
-                     this.Dispatcher.Invoke(new Action(async delegate
-                    {
-                        this.grd.ItemsSource = dt2.AsDataView();
-                        this.Money.Text = (from r in dt2.AsEnumerable() select r.Field<double>("金额")).Sum().ToString();
-                        this.Num.Text = pasteNum.ToString();
-                        this.Time.Text = num.ToString();
-                        this.Time1.Text = $"{ Math.Round((DateTime.Now - startTime).TotalSeconds, 2)}秒";
-                        this.Time1.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
-                        bool copy = CopyDataTableToClipBorad(dt2);
-                        if (copy)
-                        {
-                            this.result.Visibility = Visibility.Visible;
-                            for (int c = 0; c < 3; c++)
-                            {
-                                for (byte i = 0; i < 255; i++)
-                                {
-                                    await Task.Delay(10);
-                                    this.result.Background = new SolidColorBrush(Color.FromRgb(i, 255, i));
-                                }
-                                for (byte i = 0; i < 255; i++)
-                                {
-                                    await Task.Delay(10);
-                                    this.result.Background = new SolidColorBrush(Color.FromRgb(Convert.ToByte(255 - i), 255, Convert.ToByte(255 - i)));
-                                }
-                            }
-                        }
-                    }));
-                 });
+                this.Btn1.Dispatcher.Invoke(new Action(delegate
+                {
+                    this.result.Visibility = Visibility.Collapsed;
+                    this.Btn1.Content = "计算中...";
+                    this.Btn1.IsEnabled = false;
+                }));
+                DateTime startTime = DateTime.Now;
+
+                var dt1 = StaticVar.GridView;
+                int pasteNum = dt1.Rows.Count;
+                this.Num.Text = pasteNum.ToString();
+                var target = StaticVar.TargetValue;
+                var datatemp = dt1.AsEnumerable().Where(P => Convert.ToDouble(P["金额"]) > target).ToList();
+                datatemp.ForEach(P => dt1.Rows.Remove(P));
+                int count = dt1.Rows.Count;
+                List<DataSource> lds = new List<DataSource>();
+                foreach (DataRow row in dt1.Rows)
+                {
+                    DataSource ds = new DataSource();
+                    ds.Po = row["单号"].ToString();
+                    ds.Money = Convert.ToDouble(row["金额"]);
+                    ds.Sn = Convert.ToInt32(row["排序"]);
+                    lds.Add(ds);
+                }
+                int processes = 5;
+                List<CancellationTokenSource> ctsList = new List<CancellationTokenSource>();
+                Task<List<DataSource>>[] tasks = new Task<List<DataSource>>[processes];
+                for (int i = 0; i < processes; i++)
+                {
+                    var cts = new CancellationTokenSource();
+                    ctsList.Add(cts);
+                    Task<List<DataSource>> task = Task.Run(() => { return Algorithm(new List<DataSource>(lds),target); }, cts.Token);
+                    tasks[i] = task;
+                }
+                var tfirst = await Task.WhenAny(tasks);
+                var listView = tfirst.Result;
+                foreach (var cts in ctsList)
+                { cts.Cancel(); }
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    this.Gird.ItemsSource = listView;
+                    this.Money.Text = (from r in listView.AsEnumerable() select r.Money).Sum().ToString();
+                    this.ReCount.Text = listView.Count.ToString();
+                    this.Time.Text = $"{ Math.Round((DateTime.Now - startTime).TotalSeconds, 2)}秒";
+                    this.Time.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+                    bool copy = CopyListToClipBorad(listView);
+                });
                 this.Btn1.Content = "重新计算";
                 this.Btn1.IsEnabled = true;
             }
@@ -236,7 +222,37 @@ namespace ReverseAlgorithm
             }
             return false;
         }
-
+        public virtual bool CopyListToClipBorad<T>(List<T> list)
+        {
+            string str = null;
+            for (int i = 0; i < list.Count; i++)
+            {
+                PropertyInfo[] infos = list[i].GetType().GetProperties();
+                int ig = 0;
+                foreach (PropertyInfo info in infos)
+                {
+                    if (ig == 0)
+                    {
+                        str = $"{str}{info.GetValue(list[i])}";
+                    }
+                    else
+                    {
+                        str = $"{str}\t{info.GetValue(list[i])}";
+                    }
+                    ig++;
+                }
+                if (i != list.Count - 1)
+                {
+                    str = str + "\n";
+                }
+            }
+            if (!string.IsNullOrEmpty(str))
+            {
+                Clipboard.SetDataObject(str, true);
+                return true;
+            }
+            return false;
+        }
         private void grd_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control && e.Key == Key.V)
@@ -300,7 +316,7 @@ namespace ReverseAlgorithm
                         pasteText = pasteText.Substring(pasteText.IndexOf("\n") + 1);
                     }
                     //获取获取当前选中单元格所在的行序号
-                    int rowindex = this.grd.SelectedIndex;
+                    int rowindex = this.Gird.SelectedIndex;
                     DataTable dt = StaticVar.GridView.Clone();
                     //List<List<string>> listBoxGriderModel = new List<List<string>>();
                     dt.Columns.Add("排序", typeof(int));
@@ -316,7 +332,7 @@ namespace ReverseAlgorithm
                     dt.DefaultView.Sort = "金额 ASC";
                     dt = dt.DefaultView.ToTable();
                     StaticVar.GridView = dt;
-                    this.grd.ItemsSource = dt.AsDataView();
+                    this.Gird.ItemsSource = dt.AsDataView();
                 }
                 catch
                 {

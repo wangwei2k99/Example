@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReverseAlgorithm"
         mc:Ignorable="d"
-        Title="凑总金额算法(WangWei At 2020/11/23)" Height="450" Width="808">
+        Title="凑总金额算法(WangWei At 2020/12/15)" Height="450" Width="808">
     <Grid>
-        <DataGrid IsReadOnly="True" SelectionMode="Extended" x:Name="grd" HorizontalAlignment="Left" Width="600" KeyDown="grd_KeyDown" ClipboardCopyMode="IncludeHeader"/>
+        <DataGrid IsReadOnly="True" SelectionMode="Extended" x:Name="Gird" HorizontalAlignment="Left" Width="600" KeyDown="grd_KeyDown" ClipboardCopyMode="IncludeHeader"/>
         <StackPanel Margin="600,0,0,0" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="80">
                 <Label Content="目标总金额" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"  Height="40"/>
@@ -20,8 +20,8 @@
                 <TextBox x:Name="TextBox" TextWrapping="Wrap" Text="" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40" LostFocus="TextBox_LostFocus"/>
                 <TextBox x:Name="Money" TextWrapping="Wrap" IsReadOnly="True" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"/>
                 <TextBox x:Name="Num" TextWrapping="Wrap" IsReadOnly="True" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"/>
-                <TextBox x:Name="Time" TextWrapping="Wrap" IsReadOnly="True" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"/>
-                <TextBox x:Name="Time1" TextWrapping="Wrap" IsReadOnly="True" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40" Background="White"/>
+                <TextBox x:Name="ReCount" TextWrapping="Wrap" IsReadOnly="True" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40"/>
+                <TextBox x:Name="Time" TextWrapping="Wrap" IsReadOnly="True" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Height="40" Background="White"/>
             </StackPanel>
 
         </StackPanel>
