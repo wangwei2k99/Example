@@ -1,23 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data;
-using System.Reflection;
-using System.Threading;
 
-namespace ReverseAlgorithm
+namespace SubsetSumAlgorithm
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
@@ -29,6 +22,7 @@ namespace ReverseAlgorithm
             InitializeComponent();
             CreatGird();
         }
+
         private async void Error()
         {
             this.TextBox.Text = "请输入数字!";
@@ -37,34 +31,35 @@ namespace ReverseAlgorithm
             this.TextBox.Text = "";
             this.TextBox.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
         }
+
         private void CreatGird()
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("单号", typeof(string));
             dt.Columns.Add("金额", typeof(double));
             DataRow row = dt.NewRow();
-            row[0] = "点击此处按Ctrl+V粘贴数据";
+            row[0] = "点击此行按Ctrl+V粘贴数据";
             dt.Rows.Add(row);
             StaticVar.GridView = dt;
             Gird.ItemsSource = StaticVar.GridView.AsDataView();
             Gird.ColumnWidth = 200;
         }
 
-        private List<DataSource> Algorithm(List<DataSource> lds, double target)
+        private List<DataSource> Algorithm(DataSource[] lds, double target)
         {
-            int count = lds.Count;
+            int count = lds.Length;
             var factor = 3;
             int num = 0;
             int ntime = 0;
             int nmin = 0, nmax = 0;
             for (int i = count - 1; i >= 0; i--)
             {
-                if (lds[i].Money < target) { nmin = nmin + 1; target = target - lds[i].Money; } else { nmin = nmin + 1; break; }
+                if (lds[i].Amount < target) { nmin += 1; target -= lds[i].Amount; } else { nmin += 1; break; }
             }
             target = StaticVar.TargetValue;
             for (int i = 0; i < count; i++)
             {
-                if (lds[i].Money < target) { target = target - lds[i].Money; } else { nmax = i; break; }
+                if (lds[i].Amount < target) { target -= lds[i].Amount; } else { nmax = i; break; }
             }
             int cnt = 0;
             do
@@ -85,7 +80,7 @@ namespace ReverseAlgorithm
                     var r = (int)Math.Floor(rn * (count - i + 1)) + i;
                     if (num == count)
                     {
-                        if (target < lds[r - 1].Money)
+                        if (target < lds[r - 1].Amount)
                         {
                             num = i - 1;
                             break;
@@ -95,29 +90,30 @@ namespace ReverseAlgorithm
                     temp = lds[r - 1];
                     lds[r - 1] = lds[i - 1];
                     lds[i - 1] = temp;
-                    target = target - temp.Money;
+                    target = target - temp.Amount;
                 }
                 cnt = 0;
                 while (((int)Math.Floor(target * Math.Pow(10, factor))) != 0)
                 {
-                    cnt++; if (cnt > 300) break;
+                    cnt++; if (cnt > count/6) break;
                     var rn = (double)rnd.Next(100) / 100;
                     var i = (int)Math.Floor(rn * (count - num)) + num + 1;
                     //var i = (int)Math.Floor(rn * (count - num)) + num;
                     rn = (double)rnd.Next(100) / 100;
                     var r = (int)Math.Floor(rn / 100 * num) + 1;
-                    var s1 = target + lds[i - 1].Money - lds[r - 1].Money;
+                    var s1 = target + lds[i - 1].Amount - lds[r - 1].Amount;
                     if (Math.Abs(s1) < Math.Abs(target))
                     {
                         var temp = new DataSource();
                         temp = lds[r - 1];
                         lds[r - 1] = lds[i - 1];
                         lds[i - 1] = temp;
-                        target = target + temp.Money - lds[r - 1].Money;
+                        target = target + temp.Amount - lds[r - 1].Amount;
                     }
                 }
             } while ((int)Math.Floor(target * Math.Pow(10, factor)) != 0);
             var listView = lds.Take(num).ToList();
+            listView = listView.OrderBy(o => o.Amount).ToList();
             return listView;
         }
 
@@ -134,6 +130,7 @@ namespace ReverseAlgorithm
                 Error();
             }
         }
+
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (StaticVar.TargetValue == 0)
@@ -144,15 +141,13 @@ namespace ReverseAlgorithm
             {
                 this.Btn1.Dispatcher.Invoke(new Action(delegate
                 {
-                    this.result.Visibility = Visibility.Collapsed;
+                    this.Result.Visibility = Visibility.Collapsed;
                     this.Btn1.Content = "计算中...";
                     this.Btn1.IsEnabled = false;
                 }));
                 DateTime startTime = DateTime.Now;
 
                 var dt1 = StaticVar.GridView;
-                int pasteNum = dt1.Rows.Count;
-                this.Num.Text = pasteNum.ToString();
                 var target = StaticVar.TargetValue;
                 var datatemp = dt1.AsEnumerable().Where(P => Convert.ToDouble(P["金额"]) > target).ToList();
                 datatemp.ForEach(P => dt1.Rows.Remove(P));
@@ -161,30 +156,30 @@ namespace ReverseAlgorithm
                 foreach (DataRow row in dt1.Rows)
                 {
                     DataSource ds = new DataSource();
-                    ds.Po = row["单号"].ToString();
-                    ds.Money = Convert.ToDouble(row["金额"]);
-                    ds.Sn = Convert.ToInt32(row["排序"]);
+                    ds.OrderNumber = row["单号"].ToString();
+                    ds.Amount = Convert.ToDouble(row["金额"]);
+                    //ds.SerialNumber = Convert.ToInt32(row["排序"]);
                     lds.Add(ds);
                 }
-                int processes = 5;
+                DataSource[] arrds = lds.ToArray();
+                int processes = 8;
                 List<CancellationTokenSource> ctsList = new List<CancellationTokenSource>();
                 Task<List<DataSource>>[] tasks = new Task<List<DataSource>>[processes];
                 for (int i = 0; i < processes; i++)
                 {
                     var cts = new CancellationTokenSource();
+                    Task<List<DataSource>> task = Task.Run(() => { return Algorithm(arrds.Clone() as DataSource[], target); }, cts.Token);
                     ctsList.Add(cts);
-                    Task<List<DataSource>> task = Task.Run(() => { return Algorithm(new List<DataSource>(lds),target); }, cts.Token);
                     tasks[i] = task;
                 }
                 var tfirst = await Task.WhenAny(tasks);
                 var listView = tfirst.Result;
                 foreach (var cts in ctsList)
                 { cts.Cancel(); }
-
                 this.Dispatcher.Invoke(() =>
                 {
                     this.Gird.ItemsSource = listView;
-                    this.Money.Text = (from r in listView.AsEnumerable() select r.Money).Sum().ToString();
+                    this.Amount.Text = (from r in listView.AsEnumerable() select r.Amount).Sum().ToString();
                     this.ReCount.Text = listView.Count.ToString();
                     this.Time.Text = $"{ Math.Round((DateTime.Now - startTime).TotalSeconds, 2)}秒";
                     this.Time.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
@@ -192,6 +187,7 @@ namespace ReverseAlgorithm
                 });
                 this.Btn1.Content = "重新计算";
                 this.Btn1.IsEnabled = true;
+                this.Result.Visibility = Visibility.Visible;
             }
         }
         public virtual bool CopyDataTableToClipBorad(DataTable dataTable)
@@ -319,13 +315,13 @@ namespace ReverseAlgorithm
                     int rowindex = this.Gird.SelectedIndex;
                     DataTable dt = StaticVar.GridView.Clone();
                     //List<List<string>> listBoxGriderModel = new List<List<string>>();
-                    dt.Columns.Add("排序", typeof(int));
+                    //dt.Columns.Add("排序", typeof(int));
                     for (int j = 0; j < (nnum + 1); j++)
                     {
                         DataRow row = dt.NewRow();
                         row["单号"] = arr[j, 0];
                         row["金额"] = Convert.ToDouble(arr[j, 1].Trim());
-                        row["排序"] = j + 1;
+                        //row["排序"] = j + 1;
                         dt.Rows.Add(row);
                         //listBoxGriderModel.Add(new List<string>() {data[j, 0], data[j, 1]});
                     }
@@ -333,6 +329,8 @@ namespace ReverseAlgorithm
                     dt = dt.DefaultView.ToTable();
                     StaticVar.GridView = dt;
                     this.Gird.ItemsSource = dt.AsDataView();
+                    int pasteNum = StaticVar.GridView.Rows.Count;
+                    this.Num.Text = pasteNum.ToString();
                 }
                 catch
                 {

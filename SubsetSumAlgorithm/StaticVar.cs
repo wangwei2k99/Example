@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
-namespace ReverseAlgorithm
+namespace SubsetSumAlgorithm
 {
     public static class StaticVar
     {
@@ -28,6 +23,8 @@ namespace ReverseAlgorithm
     }
     public class DataSource
     {
-        public string Odd { get; set; }
+        public string OrderNumber { get; set; }
+        public double Amount { get; set; }
+        //public int SerialNumber { get; set; }
     }
 }
